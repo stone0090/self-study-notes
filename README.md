@@ -1,5 +1,3 @@
-# self-study-notes
-
 ## stone的终身学习笔记
 
 ### 前言
