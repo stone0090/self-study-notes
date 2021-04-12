@@ -1,7 +1,8 @@
-package liner.list;
+package _2_2_liner_list;
 
 import java.lang.reflect.Array;
 
+import common.Utils;
 import javafx.util.Pair;
 
 /**
@@ -37,7 +38,7 @@ public class SequenceList<T> {
         this.maxLength = 10;
         this.elemType = elemType == null ? String.class : elemType;
         this.data = (T[])Array.newInstance(this.elemType, this.maxLength);
-        System.out.println("顺序表创建成功");
+        System.out.println("创建顺序表成功，最大长度为" + this.maxLength);
     }
 
     /**
@@ -45,12 +46,12 @@ public class SequenceList<T> {
      *
      * @param elemType 数据元素的类型
      */
-    public SequenceList(Class<?> elemType, int length) {
+    public SequenceList(Class<?> elemType, int maxLength) {
         this.length = 0;
-        this.maxLength = length;
+        this.maxLength = maxLength;
         this.elemType = elemType == null ? String.class : elemType;
         this.data = (T[])Array.newInstance(this.elemType, this.maxLength);
-        System.out.println("顺序表创建成功");
+        System.out.println("创建顺序表成功，最大长度为" + this.maxLength);
     }
 
     /**
@@ -59,16 +60,16 @@ public class SequenceList<T> {
      * @param elem 数据元素
      */
     public void insert(T elem) {
-        if (this.length == this.maxLength) {
+        if (this.length >= this.maxLength) {
             this.maxLength = this.maxLength * 2;
             T[] temp = (T[])Array.newInstance(this.elemType, this.maxLength);
-            ;
             for (int i = 0; i < this.length; i++) {
                 temp[i] = this.data[i];
             }
             this.data = temp;
+            System.out.println("顺序表自动扩容，最大长度为" + this.maxLength + "");
         }
-        System.out.println("顺序表插入数据元素：" + elem);
+        System.out.println("顺序表插入数据元素：[" + elem + "]");
         this.data[this.length++] = elem;
     }
 
@@ -80,7 +81,7 @@ public class SequenceList<T> {
     public T delete(int index) {
         String checkMsg = checkDataPosition(index);
         if (checkMsg != null) {
-            System.out.println(checkMsg + "，删除顺序表[" + index + "]位置数据元素失败");
+            System.out.println(checkMsg + "，删除顺序表" + index + "位置数据元素失败");
             return null;
         }
         T elem = this.data[index - 1];
@@ -88,31 +89,32 @@ public class SequenceList<T> {
             this.data[i - 1] = this.data[i];
         }
         this.length--;
-        System.out.println("删除顺序表[" + index + "]位置数据元素：" + elem);
+        System.out.println("删除顺序表" + index + "位置数据元素：[" + elem + "]");
         return elem;
     }
 
     /**
-     * 删除顺序表中指定位置的数据元素
+     * 删除顺序表中指定范围的数据元素
      *
      * @param start 数据开始位置
      * @param end   数据结束位置
      */
-    public void rangeDelete(int start, int end) {
+    public void deleteByRange(int start, int end) {
         String checkMsg = checkDataPosition(start);
         if (checkMsg != null) {
-            System.out.println(checkMsg + "，删除顺序表[" + end + "]位置数据元素失败");
+            System.out.println(checkMsg + "，删除顺序表" + start + "位置数据元素失败");
             return;
         }
         String checkMsg2 = checkDataPosition(end);
         if (checkMsg != null) {
-            System.out.println(checkMsg2 + "，删除顺序表[" + end + "]位置数据元素失败");
+            System.out.println(checkMsg2 + "，删除顺序表" + end + "位置数据元素失败");
             return;
         }
         for (int i = start; i < this.length; i++) {
             this.data[i - 1] = this.data[i + end - start];
         }
-        this.length = this.length - end + start - 1;
+        System.out.println("删除顺序表" + start + "到" + end + "位置数据元素成功");
+        this.length = this.length - (end - start + 1);
     }
 
     /**
@@ -121,7 +123,7 @@ public class SequenceList<T> {
      * @param index 数据位置
      * @param elem  数据元素
      */
-    public void setElemValue(int index, T elem) {
+    public void updateElemValue(int index, T elem) {
         String checkMsg = checkDataPosition(index);
         if (checkMsg != null) {
             System.out.println(checkMsg + "，修改顺序表[" + index + "]位置数据元素失败");
@@ -140,11 +142,11 @@ public class SequenceList<T> {
     public T getElemValue(int index) {
         String checkMsg = checkDataPosition(index);
         if (checkMsg != null) {
-            System.out.println(checkMsg + "，获取顺序表[" + index + "]位置数据元素失败");
+            System.out.println(checkMsg + "，获取顺序表" + index + "位置数据元素失败");
             return null;
         }
         T elem = this.data[index - 1];
-        System.out.println("获取顺序表[" + index + "]位置数据元素：" + elem);
+        System.out.println("获取顺序表" + index + "位置数据元素：[" + elem + "]");
         return elem;
     }
 
@@ -162,7 +164,7 @@ public class SequenceList<T> {
                 break;
             }
         }
-        System.out.println("获取顺序表数据元素：" + value + "，第一个位置为：" + index);
+        System.out.println("获取顺序表第一个：[" + value + "]，位置为：" + index);
         return index;
     }
 
@@ -180,18 +182,8 @@ public class SequenceList<T> {
                 break;
             }
         }
-        System.out.println("获取顺序表数据元素：" + value + "，最后一个位置为：" + index);
+        System.out.println("获取顺序表最后一个：[" + value + "]，位置为：" + index);
         return index;
-    }
-
-    /**
-     * 获取顺序表数据元素的长度
-     *
-     * @return 数据元素的长度
-     */
-    public int getLength() {
-        System.out.println("顺序表数据元素的长度为：" + this.length);
-        return this.length;
     }
 
     /**
@@ -211,18 +203,12 @@ public class SequenceList<T> {
         }
     }
 
-    /**
-     * 顺序表判空操作
-     *
-     * @return 顺序表为空返回true，顺序表不为空返回false
-     */
-    public boolean isEmpty() {
-        System.out.println("顺序表数据元素是否为空：" + (this.length == 0 ? "true" : "false"));
-        return this.length == 0;
-    }
-
     private T[] getData() {
         return data;
+    }
+
+    private int getLength() {
+        return this.length;
     }
 
     /**
@@ -296,11 +282,14 @@ public class SequenceList<T> {
             System.out.println("执行失败，顺序表中数据元素为空");
             return;
         }
-        for (int i = 0; i < this.length / 2; i++) {
-            T temp = this.data[i];
-            this.data[i] = this.data[this.length - i - 1];
-            this.data[this.length - i - 1] = temp;
-        }
+
+        Utils.reverseArray(this.data, 0, this.length - 1);
+
+        //for (int i = 0; i < this.length / 2; i++) {
+        //    T temp = this.data[i];
+        //    this.data[i] = this.data[this.length - i - 1];
+        //    this.data[this.length - i - 1] = temp;
+        //}
     }
 
     /**
@@ -356,7 +345,7 @@ public class SequenceList<T> {
             if (firstIndex == lastIndex) {
                 this.delete(firstIndex);
             } else {
-                this.rangeDelete(firstIndex, lastIndex);
+                this.deleteByRange(firstIndex, lastIndex);
             }
         }
     }
@@ -410,27 +399,27 @@ public class SequenceList<T> {
     /**
      * 7. 将两个[有序]顺序表合并成一个新的有序顺序表，并有函数返回结果顺序表
      *
-     * @param sl [有序]顺序表
+     * @param oldSl [有序]顺序表
      */
-    public void merge(SequenceList<T> sl) {
-        if (!this.elemType.equals(Integer.class) || !sl.elemType.equals(Integer.class)) {
+    public void merge(SequenceList<T> oldSl) {
+        if (!this.elemType.equals(Integer.class) || !oldSl.elemType.equals(Integer.class)) {
             System.out.println("执行失败，此算法只支持Integer数据类型");
             return;
         }
-        SequenceList newSl = new SequenceList(Integer.class, this.length + sl.length);
+        SequenceList newSl = new SequenceList(Integer.class, this.length + oldSl.length);
         int i = 1, j = 1;
-        while (i <= this.length && j <= sl.length) {
-            if ((Integer)this.getElemValue(i) < (Integer)sl.getElemValue(j)) {
+        while (i <= this.length && j <= oldSl.length) {
+            if ((Integer)this.getElemValue(i) < (Integer)oldSl.getElemValue(j)) {
                 newSl.insert(this.getElemValue(i++));
             } else {
-                newSl.insert(sl.getElemValue(j++));
+                newSl.insert(oldSl.getElemValue(j++));
             }
         }
         while (i <= this.length) {
             newSl.insert(this.getElemValue(i++));
         }
-        while (j <= sl.length) {
-            newSl.insert(sl.getElemValue(j++));
+        while (j <= oldSl.length) {
+            newSl.insert(oldSl.getElemValue(j++));
         }
         this.data = (T[])newSl.getData();
         this.length = newSl.getLength();
