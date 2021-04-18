@@ -1,5 +1,7 @@
 package easy;
 
+import data.structure.ListNode;
+
 /**
  * @author stone
  * @date 2020/01/08
