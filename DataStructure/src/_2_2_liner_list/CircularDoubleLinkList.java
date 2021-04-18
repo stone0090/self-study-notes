@@ -8,15 +8,11 @@ package _2_2_liner_list;
  */
 public class CircularDoubleLinkList<T> {
 
+    // region: 成员变量
+
     private T data;
     private CircularDoubleLinkList<T> prior;
     private CircularDoubleLinkList<T> next;
-
-    public CircularDoubleLinkList() {
-        this.data = null;
-        this.prior = this;
-        this.next = this;
-    }
 
     public T getData() {
         return data;
@@ -40,6 +36,17 @@ public class CircularDoubleLinkList<T> {
 
     public void setNext(CircularDoubleLinkList<T> next) {
         this.next = next;
+    }
+
+    // endregion
+
+    /**
+     * 构造函数
+     */
+    public CircularDoubleLinkList() {
+        this.data = null;
+        this.prior = this;
+        this.next = this;
     }
 
     /**
@@ -69,11 +76,11 @@ public class CircularDoubleLinkList<T> {
         head.prior = node;
     }
 
+    /**
+     * 判空
+     */
     public boolean isEmpty() {
-        if (this.next.equals(this)) {
-            return true;
-        }
-        return false;
+        return this.next.equals(this);
     }
 
     /**

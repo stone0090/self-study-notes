@@ -8,7 +8,7 @@ package _2_2_liner_list;
  * @author stone
  * @date 2021/04/15
  */
-public class SingleLinkListTest {
+public class LinkListTest {
 
     public static void main(String[] args) {
 
@@ -41,6 +41,51 @@ public class SingleLinkListTest {
         // 17. 判断带头节点的循环双列表是否对称
         checkSymmetrical();
 
+        // 18. 将1个循环单链表h1接到另一个循环单链表h2之后
+        mergeCircularSingleLinkList();
+
+        // 20. 按查询频率排序双链表中的元素
+        sortByFreqDoubleLinkList();
+
+    }
+
+    private static void sortByFreqDoubleLinkList() {
+
+        System.out.println("20. 按查询频率排序双链表中的元素");
+        DoubleLinkList<Integer> linkList = new DoubleLinkList<>();
+        linkList.insertFirst(1);
+        linkList.insertFirst(2);
+        linkList.insertFirst(3);
+        linkList.insertFirst(4);
+        linkList.print();
+        linkList.locate(2);
+        linkList.print();
+        linkList.locate(3);
+        linkList.locate(3);
+        linkList.print();
+        System.out.println("");
+    }
+
+    private static void mergeCircularSingleLinkList() {
+        System.out.println("18. 将1个循环单链表h1接到另一个循环单链表h2之后");
+        CircularSingleLinkList<Integer> h1 = new CircularSingleLinkList<>();
+        h1.insertFirst(1);
+        h1.insertFirst(2);
+        h1.insertFirst(3);
+        h1.insertFirst(4);
+        h1.print();
+        CircularSingleLinkList<Integer> h2 = new CircularSingleLinkList<>();
+        h2.insertFirst(6);
+        h2.insertFirst(7);
+        h2.insertFirst(8);
+        h2.insertFirst(9);
+        h2.print();
+        CircularSingleLinkList<Integer> h1Last = h1.locateLast();
+        CircularSingleLinkList<Integer> h2Last = h2.locateLast();
+        h1Last.setNext(h2.getNext());
+        h2Last.setNext(h1);
+        h1.print();
+        System.out.println("");
     }
 
     private static void checkSymmetrical() {
@@ -97,7 +142,7 @@ public class SingleLinkListTest {
         linkList.print();
         Integer start = 7;
         Integer end = 40;
-        SingleLinkList<Integer> current = linkList;
+        SingleLinkList<Integer> current = linkList.getNext();
         SingleLinkList<Integer> prior = null;
         while (current != null) {
             if (current.getData() > start && current.getData() < end) {
