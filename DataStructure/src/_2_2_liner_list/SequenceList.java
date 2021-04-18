@@ -6,16 +6,12 @@ import common.Utils;
 import javafx.util.Pair;
 
 /**
- * 第2章 线性表
- * 2.2 线性表的顺序表示
- * 2.2.3 本节试题精选-综合应用题
+ * 顺序表
  *
  * @author stone
  * @date 2021/04/10
  */
 public class SequenceList<T> {
-
-    // TODO：未考虑线程安全
 
     // region:成员变量
 
@@ -26,7 +22,7 @@ public class SequenceList<T> {
 
     // endregion:成员变量
 
-    // region:顺序表基础操作（增删改查）
+    // region:基础操作（创销增删改查）
 
     /**
      * 顺序表构造函数
@@ -115,22 +111,6 @@ public class SequenceList<T> {
         }
         System.out.println("删除顺序表" + start + "到" + end + "位置数据元素成功");
         this.length = this.length - (end - start + 1);
-    }
-
-    /**
-     * 修改顺序表中指定位置的数据元素
-     *
-     * @param index 数据位置
-     * @param elem  数据元素
-     */
-    public void updateElemValue(int index, T elem) {
-        String checkMsg = checkDataPosition(index);
-        if (checkMsg != null) {
-            System.out.println(checkMsg + "，修改顺序表[" + index + "]位置数据元素失败");
-            return;
-        }
-        System.out.println("修改顺序表[" + index + "]位置数据元素：" + this.data[index - 1] + " -> " + elem);
-        this.data[index - 1] = elem;
     }
 
     /**
@@ -231,7 +211,7 @@ public class SequenceList<T> {
 
     // endregion
 
-    // region:顺序表扩展算法
+    // region:扩展算法
 
     /**
      * 1. 从顺序表中删除具有最小值的元素（假设唯一）并由函数返回被删元素的值，空出来的位置由最后一个元素填补，若顺序表为空，则显示出错信息并退出运行
@@ -284,12 +264,6 @@ public class SequenceList<T> {
         }
 
         Utils.reverseArray(this.data, 0, this.length - 1);
-
-        //for (int i = 0; i < this.length / 2; i++) {
-        //    T temp = this.data[i];
-        //    this.data[i] = this.data[this.length - i - 1];
-        //    this.data[this.length - i - 1] = temp;
-        //}
     }
 
     /**
