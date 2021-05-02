@@ -1,4 +1,9 @@
-package _2_2_liner_list;
+package _2_liner_list.practice;
+
+import _2_liner_list.CircularDoubleLinkList;
+import _2_liner_list.CircularSingleLinkList;
+import _2_liner_list.DoubleLinkList;
+import _2_liner_list.SingleLinkList;
 
 /**
  * 第2章 线性表
@@ -8,7 +13,7 @@ package _2_2_liner_list;
  * @author stone
  * @date 2021/04/15
  */
-public class LinkListTest {
+public class LinkListPractice {
 
     public static void main(String[] args) {
 

@@ -1,4 +1,4 @@
-package _2_2_liner_list;
+package _2_liner_list;
 
 import java.lang.reflect.Array;
 
@@ -11,14 +11,14 @@ import javafx.util.Pair;
  * @author stone
  * @date 2021/04/10
  */
-public class SequenceList<T> {
+public class SequenceList<T> implements ILinerList<T> {
 
     // region:成员变量
 
+    private T[] datas;
     private int length;
     private int maxLength;
-    private final Class<?> elemType;
-    private T[] data;
+    private final Class<?> dataType;
 
     // endregion:成员变量
 
@@ -27,66 +27,122 @@ public class SequenceList<T> {
     /**
      * 顺序表构造函数
      *
-     * @param elemType 数据元素的类型
+     * @param dataType 数据元素的类型
      */
-    public SequenceList(Class<?> elemType) {
+    public SequenceList(Class<?> dataType) {
         this.length = 0;
         this.maxLength = 10;
-        this.elemType = elemType == null ? String.class : elemType;
-        this.data = (T[])Array.newInstance(this.elemType, this.maxLength);
+        this.dataType = dataType == null ? String.class : dataType;
+        this.datas = (T[])Array.newInstance(this.dataType, this.maxLength);
         System.out.println("创建顺序表成功，最大长度为" + this.maxLength);
     }
 
     /**
      * 顺序表构造函数
      *
-     * @param elemType 数据元素的类型
+     * @param dataType 数据元素的类型
      */
-    public SequenceList(Class<?> elemType, int maxLength) {
+    public SequenceList(Class<?> dataType, int maxLength) {
         this.length = 0;
         this.maxLength = maxLength;
-        this.elemType = elemType == null ? String.class : elemType;
-        this.data = (T[])Array.newInstance(this.elemType, this.maxLength);
+        this.dataType = dataType == null ? String.class : dataType;
+        this.datas = (T[])Array.newInstance(this.dataType, this.maxLength);
         System.out.println("创建顺序表成功，最大长度为" + this.maxLength);
     }
 
-    /**
-     * 向顺序表中插入一个数据元素
-     *
-     * @param elem 数据元素
-     */
-    public void insert(T elem) {
-        if (this.length >= this.maxLength) {
-            this.maxLength = this.maxLength * 2;
-            T[] temp = (T[])Array.newInstance(this.elemType, this.maxLength);
-            for (int i = 0; i < this.length; i++) {
-                temp[i] = this.data[i];
-            }
-            this.data = temp;
-            System.out.println("顺序表自动扩容，最大长度为" + this.maxLength + "");
-        }
-        System.out.println("顺序表插入数据元素：[" + elem + "]");
-        this.data[this.length++] = elem;
+    @Override
+    public void insertFirst(T data) {
+        // TODO
     }
 
-    /**
-     * 删除顺序表中指定位置的数据元素
-     *
-     * @param index 数据位置
-     */
-    public T delete(int index) {
-        String checkMsg = checkDataPosition(index);
+    @Override
+    public void insertLast(T data) {
+        if (this.length >= this.maxLength) {
+            this.maxLength = this.maxLength * 2;
+            T[] temp = (T[])Array.newInstance(this.dataType, this.maxLength);
+            for (int i = 0; i < this.length; i++) {
+                temp[i] = this.datas[i];
+            }
+            this.datas = temp;
+            System.out.println("顺序表自动扩容，最大长度为" + this.maxLength + "");
+        }
+        System.out.println("顺序表插入数据元素：[" + data + "]");
+        this.datas[this.length++] = data;
+    }
+
+    @Override
+    public void deleteByData(T data) {
+        if (this.length < 1) {
+            System.out.println("执行失败，顺序表中数据元素为空");
+            return;
+        }
+        while (true) {
+            int index = this.getFirstPositionByData(data);
+            if (index > 0) {
+                this.deleteByPosition(index);
+            } else {
+                break;
+            }
+        }
+    }
+
+    @Override
+    public T deleteByPosition(int position) {
+        String checkMsg = checkDataPosition(position);
         if (checkMsg != null) {
-            System.out.println(checkMsg + "，删除顺序表" + index + "位置数据元素失败");
+            System.out.println(checkMsg + "，删除顺序表" + position + "位置数据元素失败");
             return null;
         }
-        T elem = this.data[index - 1];
-        for (int i = index; i < this.length; i++) {
-            this.data[i - 1] = this.data[i];
+        T elem = this.datas[position - 1];
+        for (int i = position; i < this.length; i++) {
+            this.datas[i - 1] = this.datas[i];
         }
         this.length--;
-        System.out.println("删除顺序表" + index + "位置数据元素：[" + elem + "]");
+        System.out.println("删除顺序表" + position + "位置数据元素：[" + elem + "]");
         return elem;
+    }
+
+    @Override
+    public T getDataByPosition(int index) {
+        String checkMsg = checkDataPosition(index);
+        if (checkMsg != null) {
+            System.out.println(checkMsg + "，获取顺序表" + index + "位置数据元素失败");
+            return null;
+        }
+        T elem = this.datas[index - 1];
+        System.out.println("获取顺序表" + index + "位置数据元素：[" + elem + "]");
+        return elem;
+    }
+
+    @Override
+    public int getFirstPositionByData(T data) {
+        int index = 0;
+        for (int i = 0; i < length; i++) {
+            if (this.datas[i].equals(data)) {
+                index = i + 1;
+                break;
+            }
+        }
+        System.out.println("获取顺序表第一个：[" + data + "]，位置为：" + index);
+        return index;
+    }
+
+    @Override
+    public int getLastPositionByData(T data) {
+        int index = 0;
+        for (int i = this.length - 1; i >= 0; i--) {
+            if (this.datas[i].equals(data)) {
+                index = i + 1;
+                break;
+            }
+        }
+        System.out.println("获取顺序表最后一个：[" + data + "]，位置为：" + index);
+        return index;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.length == 0;
     }
 
     /**
@@ -95,7 +151,7 @@ public class SequenceList<T> {
      * @param start 数据开始位置
      * @param end   数据结束位置
      */
-    public void deleteByRange(int start, int end) {
+    public void deleteByPositionRange(int start, int end) {
         String checkMsg = checkDataPosition(start);
         if (checkMsg != null) {
             System.out.println(checkMsg + "，删除顺序表" + start + "位置数据元素失败");
@@ -107,73 +163,21 @@ public class SequenceList<T> {
             return;
         }
         for (int i = start; i < this.length; i++) {
-            this.data[i - 1] = this.data[i + end - start];
+            this.datas[i - 1] = this.datas[i + end - start];
         }
         System.out.println("删除顺序表" + start + "到" + end + "位置数据元素成功");
         this.length = this.length - (end - start + 1);
     }
 
     /**
-     * 获取顺序表中指定位置的数据元素
-     *
-     * @param index 数据位置
-     * @return 数据元素
+     * 在控制台从前往后的打印顺序表中每个数据元素的值
      */
-    public T getElemValue(int index) {
-        String checkMsg = checkDataPosition(index);
-        if (checkMsg != null) {
-            System.out.println(checkMsg + "，获取顺序表" + index + "位置数据元素失败");
-            return null;
-        }
-        T elem = this.data[index - 1];
-        System.out.println("获取顺序表" + index + "位置数据元素：[" + elem + "]");
-        return elem;
-    }
-
-    /**
-     * 在顺序表中找到值相等的第一个元素，返回其位置
-     *
-     * @param value 查找的值
-     * @return 返回数据元素的位置，如果找不到则返回0
-     */
-    public int locateFirstElem(T value) {
-        int index = 0;
-        for (int i = 0; i < length; i++) {
-            if (data[i].equals(value)) {
-                index = i + 1;
-                break;
-            }
-        }
-        System.out.println("获取顺序表第一个：[" + value + "]，位置为：" + index);
-        return index;
-    }
-
-    /**
-     * 在顺序表中找到值相等的最后一个元素，返回其位置
-     *
-     * @param value 查找的值
-     * @return 返回数据元素的位置，如果找不到则返回0
-     */
-    public int locateLastElem(T value) {
-        int index = 0;
-        for (int i = this.length - 1; i >= 0; i--) {
-            if (data[i].equals(value)) {
-                index = i + 1;
-                break;
-            }
-        }
-        System.out.println("获取顺序表最后一个：[" + value + "]，位置为：" + index);
-        return index;
-    }
-
-    /**
-     * 在控制台从前往后的顺序打印顺序表中每个数据元素的值
-     */
+    @Override
     public void print() {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
         for (int i = 0; i < this.length; i++) {
-            sb.append(this.data[i]);
+            sb.append(this.datas[i]);
             if (i == this.length - 1) {
                 sb.append(']');
                 System.out.println("打印顺序表数据元素：" + sb.toString());
@@ -184,7 +188,7 @@ public class SequenceList<T> {
     }
 
     private T[] getData() {
-        return data;
+        return datas;
     }
 
     private int getLength() {
@@ -218,9 +222,9 @@ public class SequenceList<T> {
      *
      * @return 数据元素
      */
-    public T deleteMinElem() {
+    public T deleteByMinData() {
 
-        if (!this.elemType.equals(Integer.class)) {
+        if (!this.dataType.equals(Integer.class)) {
             System.out.println("执行失败，此算法只支持Integer数据类型");
             return null;
         }
@@ -231,23 +235,23 @@ public class SequenceList<T> {
 
         Pair min = null;
         if (this.length == 1) {
-            min = new Pair(1, this.data[0]);
+            min = new Pair(1, this.datas[0]);
         } else {
             for (int i = 1; i < this.length; i++) {
-                if (this.data[i] != null) {
-                    Integer current = (Integer)this.data[i];
+                if (this.datas[i] != null) {
+                    Integer current = (Integer)this.datas[i];
                     if (min == null) {
-                        min = new Pair(i, this.data[i]);
+                        min = new Pair(i, this.datas[i]);
                     } else {
                         if (current < (Integer)min.getValue()) {
-                            min = new Pair(i, this.data[i]);
+                            min = new Pair(i, this.datas[i]);
                         }
                     }
                 }
             }
         }
         if (min != null) {
-            return delete((Integer)min.getKey() + 1);
+            return deleteByPosition((Integer)min.getKey() + 1);
         } else {
             System.out.println("执行失败，顺序表中的数据全为null");
             return null;
@@ -263,25 +267,7 @@ public class SequenceList<T> {
             return;
         }
 
-        Utils.reverseArray(this.data, 0, this.length - 1);
-    }
-
-    /**
-     * 3. 对长度为n的顺序表L，编写一个时间复杂度为O(n)、空间复杂度为O(1)的算法，改算法删除线性表中所有值为x的数据元素
-     */
-    public void deleteElemByValue(T elem) {
-        if (this.length < 1) {
-            System.out.println("执行失败，顺序表中数据元素为空");
-            return;
-        }
-        while (true) {
-            int index = this.locateFirstElem(elem);
-            if (index > 0) {
-                this.delete(index);
-            } else {
-                break;
-            }
-        }
+        Utils.reverseArray(this.datas, 0, this.length - 1);
     }
 
     /**
@@ -290,8 +276,8 @@ public class SequenceList<T> {
      * @param s 开始元素值
      * @param t 结束元素值
      */
-    public void deleteElemByRangeValue(Integer s, Integer t) {
-        if (!this.elemType.equals(Integer.class)) {
+    public void deleteByValueRange(Integer s, Integer t) {
+        if (!this.dataType.equals(Integer.class)) {
             System.out.println("执行失败，此算法只支持Integer数据类型");
             return;
         }
@@ -307,7 +293,7 @@ public class SequenceList<T> {
         int firstIndex = 0;
         int lastIndex = 0;
         for (Integer i = s + 1; i < t; i++) {
-            int index = firstIndex == 0 ? this.locateFirstElem((T)i) : this.locateLastElem((T)i);
+            int index = firstIndex == 0 ? this.getFirstPositionByData((T)i) : this.getLastPositionByData((T)i);
             if (index != 0) {
                 if (firstIndex == 0) {
                     firstIndex = index;
@@ -317,9 +303,9 @@ public class SequenceList<T> {
         }
         if (firstIndex != 0) {
             if (firstIndex == lastIndex) {
-                this.delete(firstIndex);
+                this.deleteByPosition(firstIndex);
             } else {
-                this.deleteByRange(firstIndex, lastIndex);
+                this.deleteByPositionRange(firstIndex, lastIndex);
             }
         }
     }
@@ -330,8 +316,8 @@ public class SequenceList<T> {
      * @param s 开始元素值
      * @param t 结束元素值
      */
-    public void deleteElemByRangeValue2(Integer s, Integer t) {
-        if (!this.elemType.equals(Integer.class)) {
+    public void deleteByValueRange2(Integer s, Integer t) {
+        if (!this.dataType.equals(Integer.class)) {
             System.out.println("执行失败，此算法只支持Integer数据类型");
             return;
         }
@@ -345,24 +331,24 @@ public class SequenceList<T> {
         }
         System.out.println("开始删除顺序表中值为[" + s + "]到[" + t + "]之间的数据元素...");
         for (Integer i = s; i <= t; i++) {
-            this.deleteElemByValue((T)i);
+            this.deleteByData((T)i);
         }
     }
 
     /**
      * 6. 从[有序]顺序表中删除所有其值重复的元素，使表中所有元素的值均不同
      */
-    public void deleteRepeatValue() {
+    public void deleteByRepeatValue() {
         if (this.length < 1) {
             System.out.println("执行失败，顺序表中数据元素为空");
             return;
         }
         for (int i = 1; i <= this.length; i++) {
-            T elem = this.getElemValue(i);
+            T elem = this.getDataByPosition(i);
             while (true) {
-                int index = this.locateLastElem(elem);
+                int index = this.getLastPositionByData(elem);
                 if (i != index) {
-                    this.delete(index);
+                    this.deleteByPosition(index);
                 } else {
                     break;
                 }
@@ -376,26 +362,26 @@ public class SequenceList<T> {
      * @param oldSl [有序]顺序表
      */
     public void merge(SequenceList<T> oldSl) {
-        if (!this.elemType.equals(Integer.class) || !oldSl.elemType.equals(Integer.class)) {
+        if (!this.dataType.equals(Integer.class) || !oldSl.dataType.equals(Integer.class)) {
             System.out.println("执行失败，此算法只支持Integer数据类型");
             return;
         }
         SequenceList newSl = new SequenceList(Integer.class, this.length + oldSl.length);
         int i = 1, j = 1;
         while (i <= this.length && j <= oldSl.length) {
-            if ((Integer)this.getElemValue(i) < (Integer)oldSl.getElemValue(j)) {
-                newSl.insert(this.getElemValue(i++));
+            if ((Integer)this.getDataByPosition(i) < (Integer)oldSl.getDataByPosition(j)) {
+                newSl.insertLast(this.getDataByPosition(i++));
             } else {
-                newSl.insert(oldSl.getElemValue(j++));
+                newSl.insertLast(oldSl.getDataByPosition(j++));
             }
         }
         while (i <= this.length) {
-            newSl.insert(this.getElemValue(i++));
+            newSl.insertLast(this.getDataByPosition(i++));
         }
         while (j <= oldSl.length) {
-            newSl.insert(oldSl.getElemValue(j++));
+            newSl.insertLast(oldSl.getDataByPosition(j++));
         }
-        this.data = (T[])newSl.getData();
+        this.datas = (T[])newSl.getData();
         this.length = newSl.getLength();
     }
 

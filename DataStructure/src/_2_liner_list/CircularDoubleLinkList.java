@@ -1,4 +1,4 @@
-package _2_2_liner_list;
+package _2_liner_list;
 
 /**
  * 带头节点双循环链表

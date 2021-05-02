@@ -1,7 +1,7 @@
-package _2_2_liner_list;
+package _2_liner_list;
 
 /**
- * 带头节点双循环链表
+ * 带头节点双链表
  *
  * @author stone
  * @date 2021/04/15
