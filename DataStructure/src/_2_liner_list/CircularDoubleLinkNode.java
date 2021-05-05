@@ -6,13 +6,13 @@ package _2_liner_list;
  * @author stone
  * @date 2021/04/15
  */
-public class CircularDoubleLinkList<T> {
+public class CircularDoubleLinkNode<T> {
 
     // region: 成员变量
 
     private T data;
-    private CircularDoubleLinkList<T> prior;
-    private CircularDoubleLinkList<T> next;
+    private CircularDoubleLinkNode<T> prior;
+    private CircularDoubleLinkNode<T> next;
 
     public T getData() {
         return data;
@@ -22,19 +22,19 @@ public class CircularDoubleLinkList<T> {
         this.data = data;
     }
 
-    public CircularDoubleLinkList<T> getPrior() {
+    public CircularDoubleLinkNode<T> getPrior() {
         return prior;
     }
 
-    public void setPrior(CircularDoubleLinkList<T> prior) {
+    public void setPrior(CircularDoubleLinkNode<T> prior) {
         this.prior = prior;
     }
 
-    public CircularDoubleLinkList<T> getNext() {
+    public CircularDoubleLinkNode<T> getNext() {
         return next;
     }
 
-    public void setNext(CircularDoubleLinkList<T> next) {
+    public void setNext(CircularDoubleLinkNode<T> next) {
         this.next = next;
     }
 
@@ -43,7 +43,7 @@ public class CircularDoubleLinkList<T> {
     /**
      * 构造函数
      */
-    public CircularDoubleLinkList() {
+    public CircularDoubleLinkNode() {
         this.data = null;
         this.prior = this;
         this.next = this;
@@ -53,9 +53,9 @@ public class CircularDoubleLinkList<T> {
      * 头插
      */
     public void insertFirst(T elem) {
-        CircularDoubleLinkList<T> node = new CircularDoubleLinkList<>();
+        CircularDoubleLinkNode<T> node = new CircularDoubleLinkNode<>();
         node.data = elem;
-        CircularDoubleLinkList<T> head = this;
+        CircularDoubleLinkNode<T> head = this;
         node.prior = head;
         node.next = head.next;
         head.next.prior = node;
@@ -66,10 +66,10 @@ public class CircularDoubleLinkList<T> {
      * 尾插
      */
     public void insertLast(T elem) {
-        CircularDoubleLinkList<T> node = new CircularDoubleLinkList<>();
+        CircularDoubleLinkNode<T> node = new CircularDoubleLinkNode<>();
         node.data = elem;
-        CircularDoubleLinkList<T> head = this;
-        CircularDoubleLinkList<T> last = head.prior;
+        CircularDoubleLinkNode<T> head = this;
+        CircularDoubleLinkNode<T> last = head.prior;
         node.prior = last;
         node.next = head;
         last.next = node;
@@ -93,8 +93,8 @@ public class CircularDoubleLinkList<T> {
         }
         StringBuilder sb = new StringBuilder();
         sb.append('[');
-        CircularDoubleLinkList<T> head = this;
-        CircularDoubleLinkList<T> next = this.next;
+        CircularDoubleLinkNode<T> head = this;
+        CircularDoubleLinkNode<T> next = this.next;
         while (!next.equals(head)) {
             sb.append(next.data);
             if (!next.next.equals(head)) {

@@ -6,12 +6,12 @@ package _2_liner_list;
  * @author stone
  * @date 2021/04/15
  */
-public class CircularSingleLinkList<T> {
+public class CircularSingleLinkNode<T> {
 
     // region:成员变量
 
     private T data;
-    private CircularSingleLinkList<T> next;
+    private CircularSingleLinkNode<T> next;
 
     public T getData() {
         return data;
@@ -21,11 +21,11 @@ public class CircularSingleLinkList<T> {
         this.data = data;
     }
 
-    public CircularSingleLinkList<T> getNext() {
+    public CircularSingleLinkNode<T> getNext() {
         return next;
     }
 
-    public void setNext(CircularSingleLinkList<T> next) {
+    public void setNext(CircularSingleLinkNode<T> next) {
         this.next = next;
     }
 
@@ -34,7 +34,7 @@ public class CircularSingleLinkList<T> {
     /**
      * 构造函数
      */
-    public CircularSingleLinkList() {
+    public CircularSingleLinkNode() {
         this.next = this;
     }
 
@@ -42,9 +42,9 @@ public class CircularSingleLinkList<T> {
      * 头插
      */
     public void insertFirst(T elem) {
-        CircularSingleLinkList<T> node = new CircularSingleLinkList<>();
+        CircularSingleLinkNode<T> node = new CircularSingleLinkNode<>();
         node.data = elem;
-        CircularSingleLinkList<T> head = this;
+        CircularSingleLinkNode<T> head = this;
         node.next = head.next;
         head.next = node;
     }
@@ -52,12 +52,12 @@ public class CircularSingleLinkList<T> {
     /**
      * 定位尾节点
      */
-    public CircularSingleLinkList<T> locateLast() {
+    public CircularSingleLinkNode<T> locateLast() {
         if (isEmpty()) {
             return null;
         }
-        CircularSingleLinkList<T> head = this;
-        CircularSingleLinkList<T> next = this.next;
+        CircularSingleLinkNode<T> head = this;
+        CircularSingleLinkNode<T> next = this.next;
         while (!next.next.equals(head)) {
             next = next.next;
         }
@@ -81,8 +81,8 @@ public class CircularSingleLinkList<T> {
         }
         StringBuilder sb = new StringBuilder();
         sb.append('[');
-        CircularSingleLinkList<T> head = this;
-        CircularSingleLinkList<T> next = this.next;
+        CircularSingleLinkNode<T> head = this;
+        CircularSingleLinkNode<T> next = this.next;
         while (!next.equals(head)) {
             sb.append(next.data);
             if (!next.next.equals(head)) {

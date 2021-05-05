@@ -23,16 +23,16 @@ public class SequenceQueue<T> implements IQueue<T> {
     }
 
     @Override
-    public void push(T data) {
+    public void enqueue(T data) {
         if (this.isFull()) {
-            System.out.println("入队失败，顺序队列已满");
+            System.out.println("顺序队列已满，入队失败");
             return;
         }
         this.datas[this.length++] = data;
     }
 
     @Override
-    public T pop() {
+    public T dequeue() {
         if (this.isEmpty()) {
             return null;
         }
@@ -45,14 +45,6 @@ public class SequenceQueue<T> implements IQueue<T> {
         }
         this.length--;
         return result;
-    }
-
-    @Override
-    public T top() {
-        if (this.isEmpty()) {
-            return null;
-        }
-        return this.datas[0];
     }
 
     @Override

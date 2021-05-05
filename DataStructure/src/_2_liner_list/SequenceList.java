@@ -17,7 +17,7 @@ public class SequenceList<T> implements ILinerList<T> {
 
     private T[] datas;
     private int length;
-    private int maxLength;
+    private final int maxLength;
     private final Class<?> dataType;
 
     // endregion:成员变量
@@ -34,7 +34,6 @@ public class SequenceList<T> implements ILinerList<T> {
         this.maxLength = 10;
         this.dataType = dataType == null ? String.class : dataType;
         this.datas = (T[])Array.newInstance(this.dataType, this.maxLength);
-        System.out.println("创建顺序表成功，最大长度为" + this.maxLength);
     }
 
     /**
@@ -47,33 +46,35 @@ public class SequenceList<T> implements ILinerList<T> {
         this.maxLength = maxLength;
         this.dataType = dataType == null ? String.class : dataType;
         this.datas = (T[])Array.newInstance(this.dataType, this.maxLength);
-        System.out.println("创建顺序表成功，最大长度为" + this.maxLength);
     }
 
     @Override
     public void insertFirst(T data) {
-        // TODO
+        if (this.isFull()) {
+            System.out.println("顺序表已满，头插失败");
+            return;
+        }
+        if (!this.isEmpty()) {
+            for (int i = length; i > 0; i--) {
+                this.datas[i] = this.datas[i - 1];
+            }
+        }
+        this.datas[0] = data;
+        this.length++;
     }
 
     @Override
     public void insertLast(T data) {
-        if (this.length >= this.maxLength) {
-            this.maxLength = this.maxLength * 2;
-            T[] temp = (T[])Array.newInstance(this.dataType, this.maxLength);
-            for (int i = 0; i < this.length; i++) {
-                temp[i] = this.datas[i];
-            }
-            this.datas = temp;
-            System.out.println("顺序表自动扩容，最大长度为" + this.maxLength + "");
+        if (this.isFull()) {
+            System.out.println("顺序表已满，尾插失败");
+            return;
         }
-        System.out.println("顺序表插入数据元素：[" + data + "]");
         this.datas[this.length++] = data;
     }
 
     @Override
     public void deleteByData(T data) {
-        if (this.length < 1) {
-            System.out.println("执行失败，顺序表中数据元素为空");
+        if (this.isEmpty()) {
             return;
         }
         while (true) {
@@ -88,56 +89,47 @@ public class SequenceList<T> implements ILinerList<T> {
 
     @Override
     public T deleteByPosition(int position) {
-        String checkMsg = checkDataPosition(position);
-        if (checkMsg != null) {
-            System.out.println(checkMsg + "，删除顺序表" + position + "位置数据元素失败");
+        if (this.isEmpty() || position < 1 || position > this.length) {
             return null;
         }
-        T elem = this.datas[position - 1];
+        T data = this.datas[position - 1];
         for (int i = position; i < this.length; i++) {
             this.datas[i - 1] = this.datas[i];
         }
         this.length--;
-        System.out.println("删除顺序表" + position + "位置数据元素：[" + elem + "]");
-        return elem;
+        return data;
     }
 
     @Override
-    public T getDataByPosition(int index) {
-        String checkMsg = checkDataPosition(index);
-        if (checkMsg != null) {
-            System.out.println(checkMsg + "，获取顺序表" + index + "位置数据元素失败");
+    public T getDataByPosition(int position) {
+        if (this.isEmpty() || position < 1 || position > this.length) {
             return null;
         }
-        T elem = this.datas[index - 1];
-        System.out.println("获取顺序表" + index + "位置数据元素：[" + elem + "]");
-        return elem;
+        return this.datas[position - 1];
     }
 
     @Override
     public int getFirstPositionByData(T data) {
-        int index = 0;
+        int position = 0;
         for (int i = 0; i < length; i++) {
             if (this.datas[i].equals(data)) {
-                index = i + 1;
+                position = i + 1;
                 break;
             }
         }
-        System.out.println("获取顺序表第一个：[" + data + "]，位置为：" + index);
-        return index;
+        return position;
     }
 
     @Override
     public int getLastPositionByData(T data) {
-        int index = 0;
+        int position = 0;
         for (int i = this.length - 1; i >= 0; i--) {
             if (this.datas[i].equals(data)) {
-                index = i + 1;
+                position = i + 1;
                 break;
             }
         }
-        System.out.println("获取顺序表最后一个：[" + data + "]，位置为：" + index);
-        return index;
+        return position;
     }
 
     @Override
@@ -145,72 +137,28 @@ public class SequenceList<T> implements ILinerList<T> {
         return this.length == 0;
     }
 
-    /**
-     * 删除顺序表中指定范围的数据元素
-     *
-     * @param start 数据开始位置
-     * @param end   数据结束位置
-     */
-    public void deleteByPositionRange(int start, int end) {
-        String checkMsg = checkDataPosition(start);
-        if (checkMsg != null) {
-            System.out.println(checkMsg + "，删除顺序表" + start + "位置数据元素失败");
-            return;
-        }
-        String checkMsg2 = checkDataPosition(end);
-        if (checkMsg != null) {
-            System.out.println(checkMsg2 + "，删除顺序表" + end + "位置数据元素失败");
-            return;
-        }
-        for (int i = start; i < this.length; i++) {
-            this.datas[i - 1] = this.datas[i + end - start];
-        }
-        System.out.println("删除顺序表" + start + "到" + end + "位置数据元素成功");
-        this.length = this.length - (end - start + 1);
+    @Override
+    public boolean isFull() {
+        return this.length >= this.maxLength;
     }
 
-    /**
-     * 在控制台从前往后的打印顺序表中每个数据元素的值
-     */
     @Override
     public void print() {
+        if (this.isEmpty()) {
+            System.out.println("打印顺序表数据元素：空");
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append('[');
         for (int i = 0; i < this.length; i++) {
             sb.append(this.datas[i]);
             if (i == this.length - 1) {
                 sb.append(']');
-                System.out.println("打印顺序表数据元素：" + sb.toString());
+                System.out.println("打印顺序表数据元素：" + sb);
                 return;
             }
             sb.append(", ");
         }
-    }
-
-    private T[] getData() {
-        return datas;
-    }
-
-    private int getLength() {
-        return this.length;
-    }
-
-    /**
-     * 检查传入的数据位置，是否在顺序表中存在
-     *
-     * @param index 数据位置
-     */
-    private String checkDataPosition(int index) {
-        if (index < 1) {
-            return "数据位置不能小于1";
-        }
-        if (this.length < 1) {
-            return "顺序表为空";
-        }
-        if (index > this.length) {
-            return "数据位置不能大于顺序表的长度";
-        }
-        return null;
     }
 
     // endregion
@@ -223,7 +171,6 @@ public class SequenceList<T> implements ILinerList<T> {
      * @return 数据元素
      */
     public T deleteByMinData() {
-
         if (!this.dataType.equals(Integer.class)) {
             System.out.println("执行失败，此算法只支持Integer数据类型");
             return null;
@@ -232,7 +179,6 @@ public class SequenceList<T> implements ILinerList<T> {
             System.out.println("执行失败，顺序表中数据元素为空");
             return null;
         }
-
         Pair min = null;
         if (this.length == 1) {
             min = new Pair(1, this.datas[0]);
@@ -311,6 +257,18 @@ public class SequenceList<T> implements ILinerList<T> {
     }
 
     /**
+     * 删除顺序表中指定范围的数据元素
+     *
+     * @param start 数据开始位置
+     * @param end   数据结束位置
+     */
+    private void deleteByPositionRange(int start, int end) {
+        for (int i = start; i <= end; i++) {
+            this.deleteByPosition(i);
+        }
+    }
+
+    /**
      * 5. 从顺序表中删除其值在给定值s与t之间（包含s和t，要求s<t）的所有元素，若s或t不合理或顺序表为空，则显示出错信息并退出运行
      *
      * @param s 开始元素值
@@ -381,8 +339,8 @@ public class SequenceList<T> implements ILinerList<T> {
         while (j <= oldSl.length) {
             newSl.insertLast(oldSl.getDataByPosition(j++));
         }
-        this.datas = (T[])newSl.getData();
-        this.length = newSl.getLength();
+        this.datas = (T[])newSl.datas;
+        this.length = newSl.length;
     }
 
     // endregion

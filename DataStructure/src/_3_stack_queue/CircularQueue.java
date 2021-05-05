@@ -25,7 +25,7 @@ public class CircularQueue<T> implements IQueue<T> {
     }
 
     @Override
-    public void push(T data) {
+    public void enqueue(T data) {
         if (this.isFull()) {
             System.out.println("入队失败，循环队列已满");
             return;
@@ -35,21 +35,13 @@ public class CircularQueue<T> implements IQueue<T> {
     }
 
     @Override
-    public T pop() {
+    public T dequeue() {
         if (this.isEmpty()) {
             return null;
         }
         T result = this.datas[this.head++];
         this.length--;
         return result;
-    }
-
-    @Override
-    public T top() {
-        if (this.isEmpty()) {
-            return null;
-        }
-        return this.datas[head];
     }
 
     @Override

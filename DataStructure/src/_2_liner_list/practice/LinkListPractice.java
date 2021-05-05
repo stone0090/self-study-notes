@@ -1,9 +1,9 @@
 package _2_liner_list.practice;
 
-import _2_liner_list.CircularDoubleLinkList;
-import _2_liner_list.CircularSingleLinkList;
-import _2_liner_list.DoubleLinkList;
-import _2_liner_list.SingleLinkList;
+import _2_liner_list.CircularDoubleLinkNode;
+import _2_liner_list.CircularSingleLinkNode;
+import _2_liner_list.DoubleLinkNode;
+import _2_liner_list.SingleLinkNode;
 
 /**
  * 第2章 线性表
@@ -57,7 +57,7 @@ public class LinkListPractice {
     private static void sortByFreqDoubleLinkList() {
 
         System.out.println("20. 按查询频率排序双链表中的元素");
-        DoubleLinkList<Integer> linkList = new DoubleLinkList<>();
+        DoubleLinkNode<Integer> linkList = new DoubleLinkNode<>();
         linkList.insertFirst(1);
         linkList.insertFirst(2);
         linkList.insertFirst(3);
@@ -73,20 +73,20 @@ public class LinkListPractice {
 
     private static void mergeCircularSingleLinkList() {
         System.out.println("18. 将1个循环单链表h1接到另一个循环单链表h2之后");
-        CircularSingleLinkList<Integer> h1 = new CircularSingleLinkList<>();
+        CircularSingleLinkNode<Integer> h1 = new CircularSingleLinkNode<>();
         h1.insertFirst(1);
         h1.insertFirst(2);
         h1.insertFirst(3);
         h1.insertFirst(4);
         h1.print();
-        CircularSingleLinkList<Integer> h2 = new CircularSingleLinkList<>();
+        CircularSingleLinkNode<Integer> h2 = new CircularSingleLinkNode<>();
         h2.insertFirst(6);
         h2.insertFirst(7);
         h2.insertFirst(8);
         h2.insertFirst(9);
         h2.print();
-        CircularSingleLinkList<Integer> h1Last = h1.locateLast();
-        CircularSingleLinkList<Integer> h2Last = h2.locateLast();
+        CircularSingleLinkNode<Integer> h1Last = h1.locateLast();
+        CircularSingleLinkNode<Integer> h2Last = h2.locateLast();
         h1Last.setNext(h2.getNext());
         h2Last.setNext(h1);
         h1.print();
@@ -95,7 +95,7 @@ public class LinkListPractice {
 
     private static void checkSymmetrical() {
         System.out.println("17. 判断带头节点的循环双列表是否对称");
-        CircularDoubleLinkList<Integer> linkList = new CircularDoubleLinkList<>();
+        CircularDoubleLinkNode<Integer> linkList = new CircularDoubleLinkNode<>();
         linkList.insertLast(1);
         linkList.insertLast(2);
         linkList.insertLast(3);
@@ -103,9 +103,9 @@ public class LinkListPractice {
         linkList.insertLast(5);
         linkList.print();
         boolean isSymmetrical = true;
-        CircularDoubleLinkList<Integer> head = linkList;
-        CircularDoubleLinkList<Integer> prior = linkList.getPrior();
-        CircularDoubleLinkList<Integer> next = linkList.getNext();
+        CircularDoubleLinkNode<Integer> head = linkList;
+        CircularDoubleLinkNode<Integer> prior = linkList.getPrior();
+        CircularDoubleLinkNode<Integer> next = linkList.getNext();
         while (!next.equals(head) && !prior.equals(head)) {
             if (!next.getData().equals(prior.getData())) {
                 isSymmetrical = false;
@@ -120,18 +120,18 @@ public class LinkListPractice {
 
     private static void findSameElem() {
         System.out.println("8. 找出两个单链表的相同的元素");
-        SingleLinkList<Integer> linkList = new SingleLinkList<>();
+        SingleLinkNode<Integer> linkList = new SingleLinkNode<>();
         linkList.setData(1);
         linkList.insertLast(new Integer[] {2, 3, 4, 5, 6});
         linkList.print();
-        SingleLinkList<Integer> singleLinkList2 = new SingleLinkList<>();
-        singleLinkList2.setData(4);
-        singleLinkList2.insertLast(new Integer[] {5, 6, 7, 8, 9});
-        singleLinkList2.print();
-        SingleLinkList<Integer> current = linkList;
+        SingleLinkNode<Integer> singleLinkNode2 = new SingleLinkNode<>();
+        singleLinkNode2.setData(4);
+        singleLinkNode2.insertLast(new Integer[] {5, 6, 7, 8, 9});
+        singleLinkNode2.print();
+        SingleLinkNode<Integer> current = linkList;
         System.out.print("相同的元素有：");
         while (current != null) {
-            if (singleLinkList2.locate(current.getData()) != null) {
+            if (singleLinkNode2.locate(current.getData()) != null) {
                 System.out.print(current.getData() + " ");
             }
             current = current.getNext();
@@ -142,13 +142,13 @@ public class LinkListPractice {
 
     private static void deleteRangeElem() {
         System.out.println("7. 删除一个无序单链表中2个给定值之间的所有元素");
-        SingleLinkList<Integer> linkList = new SingleLinkList<>();
+        SingleLinkNode<Integer> linkList = new SingleLinkNode<>();
         linkList.insertLast(new Integer[] {4, 5, 7, 34, 23, 14, 22, 33, 34, 56, 31});
         linkList.print();
         Integer start = 7;
         Integer end = 40;
-        SingleLinkList<Integer> current = linkList.getNext();
-        SingleLinkList<Integer> prior = null;
+        SingleLinkNode<Integer> current = linkList.getNext();
+        SingleLinkNode<Integer> prior = null;
         while (current != null) {
             if (current.getData() > start && current.getData() < end) {
                 if (current.getNext() != null) {
@@ -172,12 +172,12 @@ public class LinkListPractice {
 
     private static void sortSingleLinkList() {
         System.out.println("6. 使链表元素递增有序");
-        SingleLinkList<Integer> linkList = new SingleLinkList<>();
+        SingleLinkNode<Integer> linkList = new SingleLinkNode<>();
         linkList.insertLast(new Integer[] {4, 3, 4, 5, 3, 4, 2, 3});
         linkList.print();
-        SingleLinkList<Integer> loop = linkList.getNext();
+        SingleLinkNode<Integer> loop = linkList.getNext();
         while (loop != null) {
-            SingleLinkList<Integer> current = linkList.getNext();
+            SingleLinkNode<Integer> current = linkList.getNext();
             while (current != null) {
                 if (current.getNext() != null) {
                     if (current.getData() > current.getNext().getData()) {
@@ -196,7 +196,7 @@ public class LinkListPractice {
 
     private static void reverseSingleLinkList() {
         System.out.println("5. 单链表就地倒置");
-        SingleLinkList<Integer> linkList = new SingleLinkList<>();
+        SingleLinkNode<Integer> linkList = new SingleLinkNode<>();
         linkList.insertLast(new Integer[] {1, 2, 3, 4, 5});
         linkList.print();
         recursiveReverse(linkList, null);
@@ -204,8 +204,8 @@ public class LinkListPractice {
         System.out.println("");
     }
 
-    private static SingleLinkList<Integer> recursiveReverse(SingleLinkList<Integer> linkList,
-                                                            SingleLinkList<Integer> head) {
+    private static SingleLinkNode<Integer> recursiveReverse(SingleLinkNode<Integer> linkList,
+                                                            SingleLinkNode<Integer> head) {
         if (linkList == null) {
             return null;
         } else {
@@ -216,7 +216,7 @@ public class LinkListPractice {
         if (linkList.getNext() == null) {
             return linkList;
         }
-        SingleLinkList<Integer> lastNode = recursiveReverse(linkList.getNext(), head);
+        SingleLinkNode<Integer> lastNode = recursiveReverse(linkList.getNext(), head);
         if (linkList.getNext() != null) {
             linkList.getNext().setNext(linkList);
             if (linkList.equals(head)) {
@@ -229,12 +229,12 @@ public class LinkListPractice {
 
     private static void deleteMin() {
         System.out.println("4. 编写删除单链表中最小值的高效算法（假设最小值是唯一的）");
-        SingleLinkList<Integer> linkList = new SingleLinkList<>();
+        SingleLinkNode<Integer> linkList = new SingleLinkNode<>();
         linkList.setData(10);
         linkList.insertLast(new Integer[] {4, 3, 4, 5, 3, 4, 2, 3});
         linkList.print();
-        SingleLinkList<Integer> minNode = null;
-        SingleLinkList<Integer> current = linkList;
+        SingleLinkNode<Integer> minNode = null;
+        SingleLinkNode<Integer> current = linkList;
         while (current != null) {
             if (minNode == null) {
                 minNode = current;
@@ -245,14 +245,14 @@ public class LinkListPractice {
             }
             current = current.getNext();
         }
-        linkList.delete(minNode);
+        linkList.deleteByData(minNode.getData());
         linkList.print();
         System.out.println("");
     }
 
     private static void reversePrint() {
         System.out.println("3. 编写算法实现从尾到头反向输出每个节点的值");
-        SingleLinkList<Integer> linkList = new SingleLinkList<>();
+        SingleLinkNode<Integer> linkList = new SingleLinkNode<>();
         linkList.insertLast(new Integer[] {1, 2, 3, 4, 5});
         linkList.print();
         System.out.print("反向输出：");
@@ -261,7 +261,7 @@ public class LinkListPractice {
         System.out.println("");
     }
 
-    private static void recursiveReversePrint(SingleLinkList<Integer> linkList) {
+    private static void recursiveReversePrint(SingleLinkNode<Integer> linkList) {
         if (linkList == null) {
             return;
         }
@@ -273,12 +273,12 @@ public class LinkListPractice {
 
     private static void loopDeleteElem() {
         System.out.println("2. 设计一个算法，从一个单链表中，删除所有值为x的节点，值为x的节点不唯一");
-        SingleLinkList<Integer> linkList = new SingleLinkList<>();
+        SingleLinkNode<Integer> linkList = new SingleLinkNode<>();
         linkList.insertLast(new Integer[] {2, 2, 3, 2, 2, 4, 5, 6, 3, 3, 4, 2, 3, 2, 2, 3, 4, 5, 2, 2, 2});
         linkList.print();
         Integer elem = 2;
-        SingleLinkList<Integer> current = linkList.getNext();
-        SingleLinkList<Integer> prior = null;
+        SingleLinkNode<Integer> current = linkList.getNext();
+        SingleLinkNode<Integer> prior = null;
         while (true) {
             if (current.getData().equals(elem)) {
                 if (current.getNext() != null) {
@@ -306,7 +306,7 @@ public class LinkListPractice {
 
     private static void recursiveDeleteElem() {
         System.out.println("1. 设计一个递归算法，删除单链表L中所值为x的节点");
-        SingleLinkList<Integer> linkList = new SingleLinkList<>();
+        SingleLinkNode<Integer> linkList = new SingleLinkNode<>();
         linkList.insertLast(new Integer[] {2, 3, 2, 2, 3, 4, 5, 2, 5, 2});
         linkList.print();
         recursiveDeleteElem(linkList, 2);
@@ -314,7 +314,7 @@ public class LinkListPractice {
         System.out.println("");
     }
 
-    private static void recursiveDeleteElem(SingleLinkList<Integer> linkList, Integer elem) {
+    private static void recursiveDeleteElem(SingleLinkNode<Integer> linkList, Integer elem) {
         if (linkList == null || elem == null) {
             return;
         }

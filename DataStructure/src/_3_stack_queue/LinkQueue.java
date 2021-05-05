@@ -19,7 +19,7 @@ public class LinkQueue<T> implements IQueue<T> {
     }
 
     @Override
-    public void push(T data) {
+    public void enqueue(T data) {
         if (this.data == null) {
             this.data = data;
         } else {
@@ -32,7 +32,7 @@ public class LinkQueue<T> implements IQueue<T> {
     }
 
     @Override
-    public T pop() {
+    public T dequeue() {
         if (this.isEmpty()) {
             return null;
         }
@@ -45,11 +45,6 @@ public class LinkQueue<T> implements IQueue<T> {
             this.next = next.next;
         }
         return result;
-    }
-
-    @Override
-    public T top() {
-        return this.data;
     }
 
     @Override

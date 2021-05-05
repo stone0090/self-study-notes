@@ -33,7 +33,7 @@ public class StaticLinkList<T> implements ILinerList<T> {
             this.length++;
         } else {
             if (this.length >= this.maxLength) {
-                System.out.println("静态链表已满，无法插入更多的数据");
+                System.out.println("静态链表已满，头插失败");
                 return;
             }
             for (int i = 0; i < this.maxLength; i++) {
@@ -57,7 +57,7 @@ public class StaticLinkList<T> implements ILinerList<T> {
             this.length++;
         } else {
             if (this.length >= this.maxLength) {
-                System.out.println("静态链表已满，无法插入更多的数据");
+                System.out.println("静态链表已满，尾插失败");
                 return;
             }
             for (int i = 0; i < maxLength; i++) {
@@ -211,9 +211,14 @@ public class StaticLinkList<T> implements ILinerList<T> {
     }
 
     @Override
+    public boolean isFull() {
+        return this.length >= this.maxLength;
+    }
+
+    @Override
     public void print() {
         if (this.isEmpty()) {
-            System.out.println("静态链表为空");
+            System.out.println("打印静态链表元素：空");
             return;
         }
         StringBuilder sb = new StringBuilder();

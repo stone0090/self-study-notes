@@ -6,14 +6,14 @@ package _2_liner_list;
  * @author stone
  * @date 2021/04/15
  */
-public class DoubleLinkList<T> {
+public class DoubleLinkNode<T> {
 
     // region: 成员变量
 
     private T data;
     private int freq;
-    private DoubleLinkList<T> prior;
-    private DoubleLinkList<T> next;
+    private DoubleLinkNode<T> prior;
+    private DoubleLinkNode<T> next;
 
     public T getData() {
         return data;
@@ -31,19 +31,19 @@ public class DoubleLinkList<T> {
         this.freq = freq;
     }
 
-    public DoubleLinkList<T> getPrior() {
+    public DoubleLinkNode<T> getPrior() {
         return prior;
     }
 
-    public void setPrior(DoubleLinkList<T> prior) {
+    public void setPrior(DoubleLinkNode<T> prior) {
         this.prior = prior;
     }
 
-    public DoubleLinkList<T> getNext() {
+    public DoubleLinkNode<T> getNext() {
         return next;
     }
 
-    public void setNext(DoubleLinkList<T> next) {
+    public void setNext(DoubleLinkNode<T> next) {
         this.next = next;
     }
 
@@ -52,7 +52,7 @@ public class DoubleLinkList<T> {
     /**
      * 构造函数
      */
-    public DoubleLinkList() {
+    public DoubleLinkNode() {
         this.data = null;
     }
 
@@ -60,9 +60,9 @@ public class DoubleLinkList<T> {
      * 头插
      */
     public void insertFirst(T elem) {
-        DoubleLinkList<T> node = new DoubleLinkList<>();
+        DoubleLinkNode<T> node = new DoubleLinkNode<>();
         node.data = elem;
-        DoubleLinkList<T> head = this;
+        DoubleLinkNode<T> head = this;
         node.prior = head;
         node.next = head.next;
         if (head.next != null) {
@@ -74,8 +74,8 @@ public class DoubleLinkList<T> {
     /**
      * 定位
      */
-    public DoubleLinkList<T> locate(T elem) {
-        DoubleLinkList<T> current = this.next;
+    public DoubleLinkNode<T> locate(T elem) {
+        DoubleLinkNode<T> current = this.next;
         while (current != null) {
             if (current.getData().equals(elem)) {
                 current.freq++;
@@ -87,8 +87,8 @@ public class DoubleLinkList<T> {
         return null;
     }
 
-    public void resort(DoubleLinkList<T> node) {
-        DoubleLinkList<T> current = this.next;
+    public void resort(DoubleLinkNode<T> node) {
+        DoubleLinkNode<T> current = this.next;
         if (node.equals(current)) {
             return;
         }
@@ -105,7 +105,7 @@ public class DoubleLinkList<T> {
         }
     }
 
-    public void delete(DoubleLinkList<T> node) {
+    public void delete(DoubleLinkNode<T> node) {
         node.prior.next = node.next;
         node.next.prior = node.prior;
         node.prior = null;
@@ -129,7 +129,7 @@ public class DoubleLinkList<T> {
         }
         StringBuilder sb = new StringBuilder();
         sb.append('[');
-        DoubleLinkList<T> next = this.next;
+        DoubleLinkNode<T> next = this.next;
         while (next != null) {
             sb.append(next.data).append("(fred:").append(next.freq).append(")");
             if (next.next != null) {
@@ -138,7 +138,7 @@ public class DoubleLinkList<T> {
             next = next.next;
         }
         sb.append(']');
-        System.out.println("打印循环双链表数据元素：" + sb.toString());
+        System.out.println("打印循环双链表数据元素：" + sb);
     }
 
 }

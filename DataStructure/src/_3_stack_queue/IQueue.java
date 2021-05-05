@@ -9,25 +9,18 @@ package _3_stack_queue;
 public interface IQueue<T> {
 
     /**
-     * 进队
+     * 入队
      *
      * @param data 元素值
      */
-    void push(T data);
+    void enqueue(T data);
 
     /**
      * 出队
      *
      * @return 队头元素
      */
-    T pop();
-
-    /**
-     * 获取队头元素值
-     *
-     * @return 队头元素
-     */
-    T top();
+    T dequeue();
 
     /**
      * 判空
@@ -51,22 +44,21 @@ public interface IQueue<T> {
     public static void main(String[] args) {
         IQueue[] queues = new IQueue[] {new SequenceQueue(), new LinkQueue(), new CircularQueue()};
         for (IQueue queue : queues) {
-            queue.push("aaa");
-            queue.push("bbb");
-            queue.push("ccc");
+            queue.enqueue("aaa");
+            queue.enqueue("bbb");
+            queue.enqueue("ccc");
             queue.print();
-            queue.push("ddd");
-            queue.push("eee");
-            queue.push("fff");
+            queue.enqueue("ddd");
+            queue.enqueue("eee");
+            queue.enqueue("fff");
             queue.print();
-            System.out.println("查询队头元素：" + queue.top());
-            System.out.println("弹出队头元素：" + queue.pop());
-            System.out.println("弹出队头元素：" + queue.pop());
-            System.out.println("弹出队头元素：" + queue.pop());
+            System.out.println("弹出队头元素：" + queue.dequeue());
+            System.out.println("弹出队头元素：" + queue.dequeue());
+            System.out.println("弹出队头元素：" + queue.dequeue());
             queue.print();
-            System.out.println("弹出队头元素：" + queue.pop());
-            System.out.println("弹出队头元素：" + queue.pop());
-            System.out.println("弹出队头元素：" + queue.pop());
+            System.out.println("弹出队头元素：" + queue.dequeue());
+            System.out.println("弹出队头元素：" + queue.dequeue());
+            System.out.println("弹出队头元素：" + queue.dequeue());
             queue.print();
             System.out.println("--------------------------");
         }
