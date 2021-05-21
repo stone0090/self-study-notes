@@ -3,7 +3,7 @@ package _2_liner_list.practice;
 import java.util.Arrays;
 
 import _2_liner_list.SequenceList;
-import common.Utils;
+import _7_sort.SortUtils;
 
 /**
  * 第2章 线性表
@@ -185,9 +185,9 @@ public class SequenceListPractice {
 
         System.out.println("思路二，分别反转线性表a和b，再次反转整个线性表，时间复杂度O(n)，空间复杂度O(1)");
         System.out.println(Arrays.toString(sl));
-        Utils.reverseArray(sl, a_start, a_end);
-        Utils.reverseArray(sl, b_start, b_end);
-        Utils.reverseArray(sl, a_start, b_end);
+        SortUtils.reverseArray(sl, a_start, a_end);
+        SortUtils.reverseArray(sl, b_start, b_end);
+        SortUtils.reverseArray(sl, a_start, b_end);
         System.out.println(Arrays.toString(sl));
         System.out.println("");
     }

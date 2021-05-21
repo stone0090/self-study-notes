@@ -2,7 +2,7 @@ package _2_liner_list;
 
 import java.lang.reflect.Array;
 
-import common.Utils;
+import _7_sort.SortUtils;
 import javafx.util.Pair;
 
 /**
@@ -212,8 +212,7 @@ public class SequenceList<T> implements ILinerList<T> {
             System.out.println("执行失败，顺序表中数据元素为空");
             return;
         }
-
-        Utils.reverseArray(this.datas, 0, this.length - 1);
+        SortUtils.reverseArray(this.datas, 0, this.length - 1);
     }
 
     /**

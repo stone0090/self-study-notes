@@ -6,7 +6,7 @@ import java.util.Arrays;
  * @author stone
  * @date 2020/02/01
  */
-public class SortUtil {
+public class SortUtils {
 
     // 冒泡排序
     public static int[] bubbleSort(int[] nums) {
