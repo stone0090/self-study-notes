@@ -31,14 +31,12 @@ public class SortUtils {
     }
 
     private static void insertSort(int[] arr, int step) {
-        A:
         for (int i = step; i < arr.length; i++) {
-            for (int j = i - step; j >= 0; j -= step) {
-                if (arr[j + step] < arr[j]) {
-                    swap(arr, j + step, j);
+            for (int j = i; j >= step; j -= step) {
+                if (arr[j] < arr[j - step]) {
+                    swap(arr, j, j - step);
                 } else {
-                    // 因为前面数据已经排好序，只要j+1有一次比j大，后面的数据就不用再重复比较，直接开始下一轮A循环
-                    continue A;
+                    break;
                 }
             }
         }
@@ -52,10 +50,15 @@ public class SortUtils {
             return;
         }
         for (int i = arr.length; i >= 1; i--) {
+            boolean earlyReturn = true;
             for (int j = 1; j < i; j++) {
                 if (arr[j - 1] > arr[j]) {
                     swap(arr, j - 1, j);
+                    earlyReturn = false;
                 }
+            }
+            if (earlyReturn) {
+                break;
             }
         }
     }
@@ -83,13 +86,14 @@ public class SortUtils {
         int midValue = arr[start];
         boolean rightToLeft = true;
         while (start < end) {
-            if (rightToLeft && arr[end] >= midValue) {
+            if (rightToLeft && arr[end] > midValue) {
                 end--;
-            } else if (!rightToLeft && arr[start] <= midValue) {
+            } else if (!rightToLeft && arr[start] < midValue) {
                 start++;
+            } else {
+                swap(arr, end, start);
+                rightToLeft = !rightToLeft;
             }
-            swap(arr, end, start);
-            rightToLeft = !rightToLeft;
         }
         arr[start] = midValue;
         return start;
@@ -102,32 +106,51 @@ public class SortUtils {
         if (arr == null || arr.length == 0 || arr.length == 1) {
             return;
         }
-        selectSort(arr, 0, arr.length);
+        for (int i = 0; i < arr.length; i++) {
+            int min = i;
+            for (int j = i; j < arr.length; j++) {
+                if (arr[j] < arr[min]) {
+                    min = j;
+                }
+            }
+            if (i != min) {
+                swap(arr, i, min);
+            }
+        }
     }
 
     /**
      * 6、堆排序
      */
     public static void heapSort(int[] arr) {
-
-    }
-
-    private static void selectSort(int[] arr, int start, int end) {
         if (arr == null || arr.length == 0 || arr.length == 1) {
             return;
         }
-        for (int i = start; i < end; i++) {
-            int minIndex = i;
-            int minValue = arr[i];
-            for (int j = i; j < end; j++) {
-                if (arr[j] < minValue) {
-                    minIndex = j;
-                    minValue = arr[j];
-                }
-            }
-            if (i != minIndex) {
-                swap(arr, i, minIndex);
-            }
+        for (int i = (int)Math.ceil(arr.length / 2) - 1; i >= 0; i--) {
+            maxHeapify(arr, i, arr.length);
+        }
+        for (int i = arr.length - 1; i > 0; i--) {
+            swap(arr, 0, i);
+            maxHeapify(arr, 0, i);
+        }
+    }
+
+    /**
+     * 构建大根堆
+     */
+    private static void maxHeapify(int[] arr, int root, int len) {
+        int left = root * 2 + 1;
+        int right = root * 2 + 2;
+        int largest = root;
+        if (left < len && arr[largest] < arr[left]) {
+            largest = left;
+        }
+        if (right < len && arr[largest] < arr[right]) {
+            largest = right;
+        }
+        if (largest != root) {
+            swap(arr, root, largest);
+            maxHeapify(arr, largest, len);
         }
     }
 
@@ -158,15 +181,15 @@ public class SortUtils {
 
     private static void merge(int[] arr, int start, int end) {
         int[] temp = new int[end - start + 1];
-        for (int i = start, j = 0; i <= end; i++, j++) {
-            temp[j] = arr[i];
+        for (int i = start; i <= end; i++) {
+            temp[i - start] = arr[i];
         }
-        int i = 0, j = temp.length / 2, k = start;
-        while (i < temp.length / 2 && j < temp.length) {
-            arr[k++] = temp[i] < temp[j] ? temp[i++] : temp[j++];
+        int left = 0, right = temp.length - 1, mid = right / 2 + 1;
+        while (left <= right / 2 && mid <= right) {
+            arr[start++] = (temp[left] < temp[mid]) ? temp[left++] : temp[mid++];
         }
-        while (i < temp.length / 2) { arr[k++] = temp[i++]; }
-        while (j < temp.length) { arr[k++] = temp[j++]; }
+        while (left <= right / 2) { arr[start++] = temp[left++]; }
+        while (mid <= right) { arr[start++] = temp[mid++]; }
     }
 
     private static void swap(int[] arr, int src, int tar) {
@@ -179,19 +202,19 @@ public class SortUtils {
     }
 
     private static int[] random(int max, int length) {
-        if (length <= 0 || max <= 0 || max < length) {
+        if (length < 0 || max < length) {
             return new int[] {};
         }
         int[] nums = new int[max];
-        for (int i = 1; i <= max; i++) {
-            nums[i - 1] = i;
+        for (int i = 0; i < max; i++) {
+            nums[i] = i + 1;
         }
         Random random = new Random();
         int[] result = new int[length];
-        for (int i = max, j = 0; i >= max - length && j < length; i--, j++) {
-            int index = random.nextInt(i);
-            result[j] = nums[index];
-            swap(nums, index, i - 1);
+        for (int i = max - 1, j = 0; j < length; i--, j++) {
+            int r = random.nextInt(i);
+            result[j] = nums[r];
+            swap(nums, r, i);
         }
         return result;
     }
