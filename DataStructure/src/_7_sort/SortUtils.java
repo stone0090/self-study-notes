@@ -164,32 +164,27 @@ public class SortUtils {
         mergeSort(arr, 0, arr.length - 1);
     }
 
-    public static void mergeSort(int[] arr, int start, int end) {
+    private static void mergeSort(int[] arr, int start, int end) {
         if (end <= start) {
             return;
-        } else if (end - start == 1) {
-            if (arr[start] > arr[end]) {
-                swap(arr, start, end);
-            }
-            return;
         }
-        int mid = start + (end - start + 1) / 2 - 1;
+        int mid = start + (end - start) / 2;
         mergeSort(arr, start, mid);
         mergeSort(arr, mid + 1, end);
-        merge(arr, start, end);
+        merge(arr, start, mid, end);
     }
 
-    private static void merge(int[] arr, int start, int end) {
+    private static void merge(int[] arr, int start, int mid, int end) {
         int[] temp = new int[end - start + 1];
         for (int i = start; i <= end; i++) {
             temp[i - start] = arr[i];
         }
-        int left = 0, right = temp.length - 1, mid = right / 2 + 1;
-        while (left <= right / 2 && mid <= right) {
-            arr[start++] = (temp[left] < temp[mid]) ? temp[left++] : temp[mid++];
+        int start1 = 0, end1 = mid - start, start2 = mid + 1, end2 = temp.length - 1;
+        while (start1 <= end1 && start2 <= end2) {
+            arr[start++] = temp[start1] < temp[start2] ? temp[start1++] : temp[start2++];
         }
-        while (left <= right / 2) { arr[start++] = temp[left++]; }
-        while (mid <= right) { arr[start++] = temp[mid++]; }
+        while (start1 <= end1) { arr[start++] = temp[start1++]; }
+        while (start2 <= end2) { arr[start++] = temp[start2++]; }
     }
 
     private static void swap(int[] arr, int src, int tar) {
