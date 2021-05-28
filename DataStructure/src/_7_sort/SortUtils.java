@@ -175,16 +175,20 @@ public class SortUtils {
     }
 
     private static void merge(int[] arr, int start, int mid, int end) {
-        int[] temp = new int[end - start + 1];
-        for (int i = start; i <= end; i++) {
-            temp[i - start] = arr[i];
+        int[] left = new int[mid - start + 1];
+        int[] right = new int[end - mid];
+        for (int i = start; i <= mid; i++) {
+            left[i - start] = arr[i];
         }
-        int start1 = 0, end1 = mid - start, start2 = mid + 1, end2 = temp.length - 1;
-        while (start1 <= end1 && start2 <= end2) {
-            arr[start++] = temp[start1] < temp[start2] ? temp[start1++] : temp[start2++];
+        for (int i = mid + 1; i <= end; i++) {
+            right[i - (mid + 1)] = arr[i];
         }
-        while (start1 <= end1) { arr[start++] = temp[start1++]; }
-        while (start2 <= end2) { arr[start++] = temp[start2++]; }
+        int i = 0, j = 0;
+        while (i < left.length && j < right.length) {
+            arr[start++] = (left[i] < right[j]) ? left[i++] : right[j++];
+        }
+        while (i < left.length) { arr[start++] = left[i++]; }
+        while (j < right.length) { arr[start++] = right[j++]; }
     }
 
     private static void swap(int[] arr, int src, int tar) {
