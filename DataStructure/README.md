@@ -1,0 +1,4 @@
+- 学习教材：王道计算机考研-数据结构 https://www.bilibili.com/video/BV1b7411N798 
+- 学习笔记：https://www.yuque.com/docs/share/b578613b-647a-40d7-bb96-18e338400d4c 
+- 课后代码：https://github.com/stone0090/self-study-notes/tree/main/DataStructure
+- LeetCode解题：https://github.com/stone0090/self-study-notes/tree/main/LeetCodeSolution
